@@ -25,21 +25,25 @@ public class Commands {
     
     /**
      * Takes an expression to simplify and a string containing a mapping of variables to values and 
-     * returns a string representing the simplfied expression 
+     * returns a string representing the simplfied expression. If vars is an empty string then
+     * numerical parts of expression will be simplified 
      * @param exp Expression to simplify
-     * @param vars which must be in the form (var1=num)( var2=num)*
+     * @param vars which must be in the form ((var1=num)( var2=num)*)* i.e. empty or match the pattern
      * @return a string representing the simplified form of the expression
      */
     public static String simplify(Expression exp, String vars){
-        String pattern = "[a-zA-Z]+="
-                + "([0-9]+('.'[0-9]*)?|'.'[0-9]+)(('e'|'E')('-'|'+')?[0-9]+)?";
-        assert vars.matches(pattern+"(\\s"+pattern+")*");
+
         Map<Expression,Double> values = new HashMap<>();
-           String[] varMap = vars.split("\\s");
-            for(String varPair:varMap){
-                String[] pair = varPair.split("=");
-                values.put(Expression.parse(pair[0]),Double.valueOf(pair[1]));
-            }
+        String pattern = "[a-zA-Z]+="
+                + "([0-9]+(\\.[0-9]*)?|\\.[0-9]+)((e|E)(\\-|\\+)?[0-9]+)?";
+        if(vars.length()>0){
+            assert vars.matches(pattern+"(\\s"+pattern+")*");
+               String[] varMap = vars.split("\\s");
+                for(String varPair:varMap){
+                    String[] pair = varPair.split("=");
+                    values.put(Expression.parse(pair[0]),Double.valueOf(pair[1]));
+                }
+        }
         return exp.simplify(values).toString();
      
     }

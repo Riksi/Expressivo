@@ -22,7 +22,7 @@ public class Main {
     }
     
     public static void main(String[] args) {
-        System.err.close();
+        //System.err.close();
         Expression exp = null;
         try{
             printOut("Welcome to Expressivo! \nEnter your expression below.\n"

@@ -30,8 +30,14 @@ public class CommandsTest {
     Plus powPlus = new Plus(new Multiply(phi,phiSq),phi); 
     Multiply prodMult = new Multiply(new Plus(phi,twoPhi),phiSq);
     
+    
+    //Same testing strategy as for Expression but with strings as output
+    //Also ensure that single letters, capital, words all work
     @Test
     public void testCompound(){
+        assertEquals(Commands.differentiate(new Variable("x"),"x"),"1.0");
+        assertEquals(Commands.differentiate(new Variable("x"),"X"),"0.0");
+        assertEquals(Commands.differentiate(new Variable("xmas"),"xmas"),"1.0");
         assertEquals(Commands.differentiate(p1,"phi"),"1.0");
         assertEquals(Commands.differentiate(p2,"phi"),"0.0");
         assertEquals(Commands.differentiate(m1,"phi"),"28.08");
@@ -42,9 +48,23 @@ public class CommandsTest {
                                                                             " + ((1.0 + (1.0 + 1.0)) * (phi * phi)))");
     }
     
+    //Same testing strategy as for Expression but in addition
+    //ensuring that it works for one and more than one var=val mappings for a given expression
+    //Also test the regex parsing of the (var=val (var=val)*)* input for floats and scientific notation
+    //Also test simplify without mapping
+    //Also test single letter, word, caps
     @Test
     public void testSimplify(){
         String vars = "phi=5.0";
+        Plus test1 = new Plus(new Number(28),new Plus(new Number(0.08),phi));
+        Multiply test2 = new Multiply(new Plus(constant,new Number(7)),test1);
+        Variable x = new Variable("x");
+        assertEquals(Commands.simplify(x, "x=16.47e-9"),"1.647E-8");
+        assertEquals(Commands.simplify(x, "x=16.47E+9"),"1.647E10");
+        assertEquals(Commands.simplify(x, "x=1.4E19"),"1.4E19");
+        assertEquals(Commands.simplify(x, "X=16.47e-9"),"x");
+        assertEquals(Commands.simplify(test1,""),"(28.08 + phi)");
+        assertEquals(Commands.simplify(test2,""),"(35.08 * (28.08 + phi))");
         assertEquals(Commands.simplify(constant,vars),"28.08");
         assertEquals(Commands.simplify(phi,vars),"5.0");
         assertEquals(Commands.simplify(psi,vars),"psi");
