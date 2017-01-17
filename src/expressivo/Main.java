@@ -7,7 +7,7 @@ package expressivo;
 
 //TODO: Modify the error handling
 //Must not catch errors
-//Instead use regex to determine if input is in the right for for differentiate and simplify
+//Instead use regex to determine if input is in the right format for differentiate and simplify and report to user if it is not rather than catch AssertionError
 //For the expression entered by the user if the parser cannot parse it, then the
 //user should be informed of this. So should consider how to use checked expection here.
 
