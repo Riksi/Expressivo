@@ -5,6 +5,12 @@ package expressivo;
 //Will do nothing for the methods related to power
 //Will not consider the possibility of '-' in sum and '/' in product
 
+//TODO: Modify the error handling
+//Must not catch errors
+//Instead use regex to determine if input is in the right for for differentiate and simplify
+//For the expression entered by the user if the parser cannot parse it, then the
+//user should be informed of this. So should consider how to use checked expection here.
+
 import java.io.*;
 
 public class Main {
